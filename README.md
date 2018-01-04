@@ -7,8 +7,7 @@
 
 Very simple sql query builder focusing on sqlite compatibility
 
-For pretty much complete and rich library see [sqlbuilder](https://pypi.python.org/pypi/sqlbuilder)
-
+If complex features are needed, I recommend to use the rich library [sqlbuilder](https://pypi.python.org/pypi/sqlbuilder) instead.
 
 ## Example
 
