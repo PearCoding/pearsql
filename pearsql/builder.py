@@ -246,22 +246,21 @@ class _SqlColumn(_SqlWhereStatement):
         self.alias = None
         self.value = None
 
-    def build(self, query, with_as=False, with_value=False):
+    def build(self, query, with_as=False):
         if with_as and self.alias:
-            s = "%s.%s AS %s" % (_escape(query, self.table), _enquote(query, self.column), _enquote(query, self.alias))
+            return "%s.%s AS %s" % (
+            _escape(query, self.table), _enquote(query, self.column), _enquote(query, self.alias))
         else:
-            s = "%s.%s" % (_escape(query, self.table), _enquote(query, self.column))
+            return "%s.%s" % (_escape(query, self.table), _enquote(query, self.column))
 
-        if with_value:
-            if self.value is None:
-                if not query._ignore_none:
-                    raise SqlException("None value given")
-                else:
-                    return s
+    def build_value(self, query):
+        if self.value is None:
+            if not query._ignore_none:
+                raise SqlException("None value given")
             else:
-                return s + " = " + _escape(query, self.value)
+                return "NULL"
         else:
-            return s
+            return _escape(query, self.value)
 
     def as_(self, alias):
         self.alias = alias
@@ -530,7 +529,7 @@ class SqlQuery:
         return " ".join(j.build(self) for j in self._joins)
 
     def _build_values(self):
-        return "(" + ", ".join(e.build(self, False, True) for e in self._columns) + ")"
+        return "(" + ", ".join(e.build_value(self) for e in self._columns) + ")"
 
     def build(self, beautiful=False, complete=True):
         if beautiful:
