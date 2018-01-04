@@ -1,4 +1,10 @@
 # pearsql
+![Status](https://img.shields.io/badge/Status-Alpha-brightgreen.svg)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/PearCoding/pearsql/master/LICENSE)
+![Language](https://img.shields.io/badge/language-Python-orange.svg)
+![Python](https://img.shields.io/badge/Python-2.7+-orange.svg)
+![Python](https://img.shields.io/badge/Python-3.5+-orange.svg)
+
 Very simple sql query builder focusing on sqlite compatibility
 
 For pretty much complete and rich library see [sqlbuilder](https://pypi.python.org/pypi/sqlbuilder)
