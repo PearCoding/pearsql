@@ -6,7 +6,7 @@ For pretty much complete and rich library see [sqlbuilder](https://pypi.python.o
 
 ## Example
 
-```
+```python
 from pearsql import D, Q, F
 
 Q.USE_QUOTES = False
