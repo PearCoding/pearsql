@@ -17,9 +17,13 @@ def _enquote(query, s):
         return s
 
 
+def _escape_str(s):
+    return s.replace("'", "''")
+
+
 def _escape(query, obj):
     if isinstance(obj, __string_types):
-        return "'%s'" % str(obj)
+        return "'%s'" % _escape_str(obj)
     elif isinstance(obj, SqlQuery):
         return "(" + obj.build(False, False) + ")"
     elif isinstance(obj, _SqlTable):
