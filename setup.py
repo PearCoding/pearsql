@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='pearsql',
-      version='0.1.2',
+      version='0.1.3',
       description='Very simple sql query builder focusing on sqlite compatibility',
       long_description=readme(),
       classifiers=[

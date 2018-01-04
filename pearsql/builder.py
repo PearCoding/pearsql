@@ -530,7 +530,7 @@ class SqlQuery:
         return " ".join(j.build(self) for j in self._joins)
 
     def _build_values(self):
-        return ", ".join(e.build(self, False, True) for e in self._columns)
+        return "(" + ", ".join(e.build(self, False, True) for e in self._columns) + ")"
 
     def build(self, beautiful=False, complete=True):
         if beautiful:
