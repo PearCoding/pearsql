@@ -498,11 +498,14 @@ class SqlQuery:
                     return oc.alias
         return None
 
-    def _build_columns(self):
+    def _build_select_columns(self):
         if len(self._columns) == 0:
             return "*"
         else:
             return ", ".join(e.build(self, True) for e in self._columns)
+
+    def _build_insert_columns(self):
+        return ", ".join(_enquote(self, e.column) for e in self._columns)
 
     def _build_tables(self):
         if not self._tables:
@@ -548,7 +551,7 @@ class SqlQuery:
                 q += " DISTINCT"
             q += sep
 
-            q += self._build_columns() + sep
+            q += self._build_select_columns() + sep
             q += "FROM " + self._build_tables() + sep
             if self._joins:
                 q += self._build_joins() + sep
@@ -571,7 +574,7 @@ class SqlQuery:
             q = "INSERT INTO "
             q += self._build_tables() + " "
             if self._columns:
-                q += "(" + self._build_columns() + ")" + sep
+                q += "(" + self._build_insert_columns() + ")" + sep
                 q += "VALUES " + self._build_values() + sep
             else:
                 q += "DEFAULT VALUES" + sep
