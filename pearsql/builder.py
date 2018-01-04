@@ -44,13 +44,6 @@ def _escape(query, obj):
         return str(obj)
 
 
-def _dyn_add(l, values):
-    try:
-        l.extend(values)
-    except (AttributeError, TypeError):
-        l.append(values)
-
-
 class SqlException:
     def __init__(self, msg):
         self.message = msg
@@ -337,25 +330,25 @@ class SqlQuery:
 
     # First step: Operator
     @staticmethod
-    def select(tables):
+    def select(*tables):
         return SqlQuery.__start_operation(tables, _SqlOperationType.SELECT)
 
     @staticmethod
-    def insert(tables):
+    def insert(*tables):
         return SqlQuery.__start_operation(tables, _SqlOperationType.INSERT)
 
     @staticmethod
-    def update(tables):
+    def update(*tables):
         return SqlQuery.__start_operation(tables, _SqlOperationType.UPDATE)
 
     @staticmethod
-    def delete(tables):
+    def delete(*tables):
         return SqlQuery.__start_operation(tables, _SqlOperationType.DELETE)
 
     @staticmethod
     def __start_operation(tables, operation):
         query = SqlQuery(operation)
-        _dyn_add(query._tables, tables)
+        query._tables.extend(tables)
         return query
 
     # Flags
@@ -387,33 +380,34 @@ class SqlQuery:
         return self
 
     # (Optional)
-    def tables(self, l):
-        _dyn_add(self._tables, l)
+    def tables(self, *l):
+        self._tables.extend(l)
         return self
 
     # Columns
-    def columns(self, l):
-        _dyn_add(self._columns, l)
+    def columns(self, *l):
+        self._columns.extend(l)
         return self
 
     # Where
-    def where(self, condition):
-        _dyn_add(self._wheres, condition)
+    def where(self, *condition):
+        self._wheres.extend(condition)
         return self
 
     # Having
-    def having(self, condition):
-        _dyn_add(self._havings, condition)
+    def having(self, *condition):
+        self._havings.extend(condition)
         return self
 
     # Order By
     # TODO: Position of queue element important?
-    def orderby(self, column):
+    def orderby(self, *columns):
         if self._operation != _SqlOperationType.SELECT:
             raise SqlException("Need Select operator for orderby")
 
-        self._orderby_table[str(column)] = (_SqlOrderByType.ASC, column)
-        self._last_orderby = column
+        for c in columns:
+            self._orderby_table[str(c)] = (_SqlOrderByType.ASC, c)
+            self._last_orderby = c
         return self
 
     def asc(self):
@@ -435,11 +429,11 @@ class SqlQuery:
         return self
 
     # Group By
-    def groupby(self, column):
+    def groupby(self, *columns):
         if self._operation != _SqlOperationType.SELECT:
             raise SqlException("Need Select operator for groupby")
 
-        self._groupby_list.append(column)
+        self._groupby_list.extend(columns)
         return self
 
     # Joins
