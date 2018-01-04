@@ -44,9 +44,8 @@ def _escape(query, obj):
         return str(obj)
 
 
-class SqlException:
-    def __init__(self, msg):
-        self.message = msg
+class SqlException(Exception):
+    pass
 
 
 # Enums
