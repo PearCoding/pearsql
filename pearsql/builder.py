@@ -531,7 +531,7 @@ class SqlQuery:
         return "(" + ", ".join(e.build_value(self) for e in self._columns) + ")"
 
     def _build_set_values(self):
-        return ", ".join(e.build(self, False) + " = " + e.build_value(self) for e in self._columns)
+        return ", ".join(_enquote(self, e.column) + " = " + e.build_value(self) for e in self._columns)
 
     def build(self, beautiful=False, complete=True):
         if beautiful:
@@ -574,6 +574,7 @@ class SqlQuery:
             else:
                 q += "DEFAULT VALUES" + sep
         elif self._operation == _SqlOperationType.UPDATE:
+            self._use_aliases = False  # No aliases allowed
             q = "UPDATE "
             q += self._build_tables() + sep
             q += "SET " + self._build_set_values() + sep
