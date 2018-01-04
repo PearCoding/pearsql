@@ -2,13 +2,13 @@ from setuptools import setup
 
 
 def readme():
-    with open('README.rst') as f:
+    with open('README.md') as f:
         return f.read()
 
 
 setup(name='pearsql',
       version='0.1',
-      description='Very simple sql query builder focusing on sqlite',
+      description='Very simple sql query builder focusing on sqlite compatibility',
       long_description=readme(),
       classifiers=[
           'Development Status :: 3 - Alpha',
